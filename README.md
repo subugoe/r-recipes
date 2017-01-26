@@ -10,4 +10,4 @@ knitr::spin(file.R)
 
 ## Content
 
-- [Searching GRID for organisational IDs](solr_grid/solr_grid.md))
+- [Searching GRID for organisational IDs](solr_grid/solr_grid.md)
