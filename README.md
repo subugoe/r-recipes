@@ -11,3 +11,4 @@ knitr::spin(file.R)
 ## Content
 
 - [Searching GRID for organisational IDs](solr_grid/solr_grid.md)
+- [Plotting institutional collaboration graphs using GRID](solr/plot_map.md)

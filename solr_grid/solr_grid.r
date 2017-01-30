@@ -85,6 +85,7 @@ library(ggalt)    # devtools::install_github("hrbrmstr/ggalt")
 
 #' Choose world map
 world <- map_data("world")
+
 #' Remove Antarctica
 world <- world %>%
   filter(region != "Antarctica")
@@ -94,20 +95,21 @@ gg <- gg + geom_map(
   data = world,
   map = world,
   aes(x = long, y = lat, map_id = region),
-  color = "white",
+  color = "#191919",
   fill = "#7f7f7f",
   size = 0.05,
   alpha = 1 / 4
 )
+
 gg <- gg + geom_point(
   data = gc_df,
   aes(x = as.numeric(lng), y = as.numeric(lat)),
-  size = 0.8,
-  alpha = 0.1,
-  color = "#3fb0ac"
+  size = 1.2,
+  alpha = 0.2,
+  color = "#a3f6fd"
 )
-gg <- gg + coord_proj("+proj=wintri") +
+gg <- gg + # coord_proj("+proj=wintri") +
   theme_map() +
-  theme(strip.background = element_blank()) +
-  theme(legend.position = "none")
+ # theme(strip.background = element_blank()) +
+  theme(legend.position = "none", plot.background = element_rect(fill = '#191919'))
 gg
