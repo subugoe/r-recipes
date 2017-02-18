@@ -1,0 +1,73 @@
+"institution","institution_cubes_name","institution_full_name","continent","country","state","grid"
+"Bamberg U","bamberg_u","Bamberg University","EUROPE","DEU","BY","grid.7359.8"
+"Bielefeld U","bielefeld_u","Bielefeld University","EUROPE","DEU","NW","grid.7491.b"
+"Duisburg-Essen U","duisburg_essen_u","University of Duisburg-Essen","EUROPE","DEU","NW","grid.5718.b"
+"FU Berlin","fu_berlin","Freie Universität Berlin","EUROPE","DEU","BE","grid.14095.39"
+"GFZ-Potsdam","gfz_potsdam","Library Wissenschaftspark Albert Einstein","EUROPE","DEU","BB","grid.23731.34"
+"Konstanz U","konstanz_u","University of Konstanz","EUROPE","DEU","BW","grid.9811.1"
+"Leipzig U","lepzig_u","Leipzig University","EUROPE","DEU","SN","grid.9647.c"
+"MPG","mpg","Max Planck Digital Library","EUROPE","DEU","BY","grid.431460.4"
+"Regensburg U","regensburg_u","University of Regensburg","EUROPE","DEU","BY","grid.7727.5"
+"TU Clausthal","tu_clausthal","Clausthal University of Technology","EUROPE","DEU","NI","grid.5164.6"
+"Muenchen LMU","muenchen_lmu","Ludwig-Maximilians-Universität München","EUROPE","DEU","BY","grid.5252.0"
+"Goettingen U","goettingen_u","University of Göttingen","EUROPE","DEU","NI","grid.7450.6"
+"Heidelberg U","heidelberg_u","Heidelberg University","EUROPE","DEU","BW","grid.7700.0"
+"Hamburg TUHH","hamburg_tuhh","Hamburg University of Technology","EUROPE","DEU","HH","grid.6884.2"
+"Bayreuth U","bayreuth_u","Bayreuth University","EUROPE","DEU","BY","grid.7384.8"
+"KIT","kit","KIT Karlsruhe","EUROPE","DEU","BW","grid.7892.4"
+"INM - Leibniz-Institut für Neue Materialien","inm","INM - Leibniz Institute for New Materials","EUROPE","DEU","SL","grid.425202.3"
+"MDC","mdc","Max Delbrück Center for Molecular Medicine (MDC)","EUROPE","DEU","BE","grid.419491.0"
+"TU Chemnitz","tu_chemnitz","Technische Universität Chemnitz","EUROPE","DEU","SN","grid.6810.f"
+"TU Dresden","tu_dresden","Technische Universität Dresden","EUROPE","DEU","SN","grid.4488.0"
+"Dortmund TU","dortmund_tu","Technische Universität Dortmund","EUROPE","DEU","NW","grid.5675.1"
+"Bochum U","bochum_u","Ruhr Universität Bochum","EUROPE","DEU","NW","grid.5570.7"
+"Giessen U","giessen_u","JLU Gießen","EUROPE","DEU","HE","grid.8664.c"
+"FZJ - ZB","fzj_fb","Forschungszentrum Jülich","EUROPE","DEU","NW","grid.8385.6"
+"Kassel U","kassel_u","University of Kassel","EUROPE","DEU","HE","grid.5155.4"
+"TU Ilmenau","tu_ilmenau","Technische Universität Ilmenau","EUROPE","DEU","TH","grid.6553.5"
+"TU Muenchen","tu_muenchen","Technische Universität München","EUROPE","DEU","BY","grid.6936.a"
+"Hannover U","hannover_u","Leibniz Universität Hannover","EUROPE","DEU","NI","grid.9122.8"
+"Wuerzburg U","wuerzburg_u","University of Würzburg","EUROPE","DEU","BY","grid.8379.5"
+"Leibniz-Fonds","leibnizfonds","Leibniz-Fonds","EUROPE","DEU","BE","grid.413453.4"
+"Potsdam U","potsdam_u","University of Potsdam","EUROPE","DEU","BB","grid.11348.3f"
+"FWF - Austrian Science Fund","fwf","FWF - Austrian Science Fund","EUROPE","AUT","WI","grid.25111.36"
+"Bremen U","bremen_u","University of Bremen","EUROPE","DEU","HB","grid.7704.4"
+"Erlangen Nuernberg U","erlangen_nuernberg_u","Friedrich-Alexander-Universität Erlangen-Nürnberg","EUROPE","DEU","BY","grid.5330.5"
+"Wellcome Trust","wellcome_trust"," Wellcome Trust","EUROPE","GBR","ENG",NA
+"Tuebingen U","tuebingen_u","Eberhard Karls Universität Tübingen","EUROPE","DEU","BW","grid.10392.39"
+"Ulm U","ulm_u","Ulm University","EUROPE","DEU","BW","grid.6582.9"
+"Freiburg U","freiburg_u","University of Freiburg","EUROPE","DEU","BW","grid.5963.9"
+"TU Wien","tu_wien","Technische Universität Wien","EUROPE","AUT","WI",NA
+"HZDR","hzdr","Helmholtz-Zentrum Dresden-Rossendorf","EUROPE","DEU","SN","grid.40602.30"
+"Harvard U","harvard_u","Harvard University","NORTH_AMERICA","USA","US-MA",NA
+"Oldenburg U","oldenburg_u","Carl von Ossietzky Universität Oldenburg","EUROPE","DEU","NI","grid.5560.6"
+"OpenAIRE","openaire","OpenAIRE (FP7 Post-Grant OA Pilot)","EUROPE","GRC","GR-I",NA
+"Bangor University","bangor_u","Bangor University","EUROPE","GBR","WLS",NA
+"Cranfield University","cranfield_u","Cranfield University","EUROPE","GBR","ENG",NA
+"Durham University","durham_u","Durham University","EUROPE","GBR","ENG",NA
+"Imperial College London","imperial_college_london","Imperial College London","EUROPE","GBR","ENG",NA
+"Loughborough University","loughborough_u","Loughborough University","EUROPE","GBR","ENG",NA
+"LSHTM","lhstm","London School of Hygiene & Tropical Medicine (LSHTM)","EUROPE","GBR","ENG",NA
+"Newcastle University","newcastle_u","Newcastle University","EUROPE","GBR","ENG",NA
+"Plymouth University","plymouth_u","Plymouth University","EUROPE","GBR","ENG",NA
+"Queen Mary, University of London","queen_mary_u","Queen Mary University of London","EUROPE","GBR","ENG",NA
+"Royal Holloway","royal_holloway","Royal Holloway, University of London","EUROPE","GBR","ENG",NA
+"Swansea University","swansea_u","Swansea University","EUROPE","GBR","WLS",NA
+"UCL","ucl","University College London (UCL)","EUROPE","GBR","ENG",NA
+"University of Bath","bath_u","University of Bath","EUROPE","GBR","ENG",NA
+"University of Birmingham","birgmingham_u","University of Birmingham","EUROPE","GBR","ENG",NA
+"University of Bristol","bristol_u","University of Bristol","EUROPE","GBR","ENG",NA
+"University of Cambridge","cambridge_u","University of Cambridge","EUROPE","GBR","ENG",NA
+"University of Glasgow","glasgow_u","University of Glasgow","EUROPE","GBR","SCT",NA
+"University of Portsmouth","portsmouth_u","University of Portsmouth","EUROPE","GBR","ENG",NA
+"University of Salford","salford_u","University of Salford","EUROPE","GBR","ENG",NA
+"University of Sheffield","sheffield_u","University of Sheffield","EUROPE","GBR","ENG",NA
+"University of Sussex","sussex_u","University of Sussex","EUROPE","GBR","ENG",NA
+"University of Warwick","warwick_u","University of Warwick","EUROPE","GBR","ENG",NA
+"University of Calgary","calgary_u","University of Calgary","NORTH_AMERICA","CAN","CA-AB",NA
+"IPN","ipn","IPN - Leibniz Institute for Science and Mathematics Education","EUROPE","DEU","SH","grid.461789.5"
+"UFZ","ufz","Helmholtz-Zentrum für Umweltforschung – UFZ","EUROPE","DEU","SN","grid.7492.8"
+"TiHo Hannover","tiho","University of Veterinary Medicine Hannover, Foundation","EUROPE","DEU","NI","grid.412970.9"
+"Milano U","milano_u","Università degli Studi di Milano","EUROPE","ITA","IT-25",NA
+"Virginia Tech","virginia_tech","Virginia Polytechnic Institute and State University","NORTH_AMERICA","USA","US-VA",NA
+"Münster U","muenster_u","Münster University","EUROPE","DEU","NW","grid.5949.1"
