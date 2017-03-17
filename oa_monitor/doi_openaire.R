@@ -25,34 +25,41 @@ knitr::opts_chunk$set(
 require(dplyr)
 require(httr)
 require(xml2)
-openaire_doi_repo <- function(doi = NULL) {
+openaire_doi_repo <- function(doi = NULL, oa = "true") {
   u <- httr::modify_url("http://api.openaire.eu/",
                         path = "search/publications",
-                        query = list(doi = doi))
+                        query = list(doi = doi,
+                                     OA = "true"))
   resp <- httr::GET(u)
   if (httr::http_type(resp) != "application/xml") {
     stop("API did not return xml", call. = FALSE)
   }
-  resp %>%
+  out <- resp %>%
     httr::content() %>%
-    parse_openaire_xml() %>%
-    dplyr::mutate(doi = doi)
+    parse_openaire_xml()
+  if(!is.null(out))
+    dplyr::mutate(out, doi = doi)
+  else 
+    NULL
 }
 #' #### Parser
 parse_openaire_xml <- function(req) {
   xml2::xml_ns_strip(req)
   records <-
-    xml2::xml_find_all(req,
+    suppressWarnings(xml2::xml_find_all(req,
                        ".//results//result//metadata//oaf:entity//oaf:result",
-                       xml2::xml_ns(req))
-  
+                       xml2::xml_ns(req)))
+  if(length(records) == 0) {
+    out <- NULL 
+  } else {
   oai_id <- unlist(lapply(records, function(x)
     xml2::xml_find_all(x, "./originalId") %>%
       xml2::xml_text()))
   provenance_name <- unlist(lapply(records, function(x)
     xml2::xml_find_all(x, "./collectedfrom") %>%
       xml2::xml_attr("name")))
-  dplyr::data_frame(oai_id, provenance_name)
+  out <- dplyr::data_frame(oai_id, provenance_name) }
+  return(out)
 }
 #' ### Request OAI identifiers by DOIs
 #'
@@ -60,7 +67,8 @@ plyr::ldply(
   c(
     "10.1007/s00208-010-0630-3",
     "10.1186/s13068-016-0686-8",
-    "10.7717/peerj.2323"
+    "10.7717/peerj.2323", 
+    "10.1039/c2cp23765b"
   ),
   openaire_doi_repo
 ) %>%
