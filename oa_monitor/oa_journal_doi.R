@@ -27,7 +27,7 @@ my_jn_data <- rcrossref::cr_journals(
   works = TRUE,
   limit = 1000
 )
-head(my_jn_data$data)
+my_jn_data$data
 #' ## Call oaDOI.org
 #'
 #' In the next step, let's call oaDOI.org to explore whether there are OA copies
@@ -42,10 +42,12 @@ oa_df %>%
   group_by(evidence) %>%
   summarise(Articles = n()) %>%
   mutate(Proportion = Articles / sum(Articles)) %>%
-  arrange(desc(Articles))
+  arrange(desc(Articles)) %>%
+  knitr::kable()
 #' ### by green or gold open access
 oa_df %>%
   group_by(oa_color) %>%
   summarise(Articles = n()) %>%
   mutate(Proportion = Articles / sum(Articles)) %>%
-  arrange(desc(Articles))
+  arrange(desc(Articles)) %>%
+  knitr::kable()

@@ -26,20 +26,24 @@ my_jn_data <- rcrossref::cr_journals(
   works = TRUE,
   limit = 1000
 )
-head(my_jn_data$data)
-#> # A tibble: 6 x 33
-#>   alternative.id
-#>            <chr>
-#> 1               
-#> 2               
-#> 3               
-#> 4               
-#> 5               
-#> 6               
-#> # ... with 32 more variables: container.title <chr>, created <chr>,
-#> #   deposited <chr>, DOI <chr>, funder <list>, indexed <chr>, ISBN <chr>,
-#> #   ISSN <chr>, issue <chr>, issued <chr>, license_date <chr>,
-#> #   license_URL <chr>, license_delay.in.days <chr>,
+my_jn_data$data
+#> # A tibble: 286 x 33
+#>    alternative.id
+#>             <chr>
+#>  1               
+#>  2               
+#>  3               
+#>  4               
+#>  5               
+#>  6               
+#>  7               
+#>  8               
+#>  9               
+#> 10               
+#> # ... with 276 more rows, and 32 more variables: container.title <chr>,
+#> #   created <chr>, deposited <chr>, DOI <chr>, funder <list>,
+#> #   indexed <chr>, ISBN <chr>, ISSN <chr>, issue <chr>, issued <chr>,
+#> #   license_date <chr>, license_URL <chr>, license_delay.in.days <chr>,
 #> #   license_content.version <chr>, link <list>, member <chr>,
 #> #   prefix <chr>, publisher <chr>, reference.count <chr>, score <chr>,
 #> #   source <chr>, subject <chr>, title <chr>, type <chr>, URL <chr>,
@@ -70,17 +74,19 @@ oa_df %>%
   group_by(evidence) %>%
   summarise(Articles = n()) %>%
   mutate(Proportion = Articles / sum(Articles)) %>%
-  arrange(desc(Articles))
-#> # A tibble: 5 x 3
-#>                                                evidence Articles
-#>                                                   <chr>    <int>
-#> 1                                                closed      240
-#> 2 oa repository (via BASE title and first author match)       34
-#> 3                    oa repository (via BASE doi match)        7
-#> 4                      oa repository (via pmcid lookup)        3
-#> 5                         hybrid (via crossref license)        2
-#> # ... with 1 more variables: Proportion <dbl>
+  arrange(desc(Articles)) %>%
+  knitr::kable()
 ```
+
+
+
+|evidence                                              | Articles| Proportion|
+|:-----------------------------------------------------|--------:|----------:|
+|closed                                                |      240|  0.8391608|
+|oa repository (via BASE title and first author match) |       34|  0.1188811|
+|oa repository (via BASE doi match)                    |        7|  0.0244755|
+|oa repository (via pmcid lookup)                      |        3|  0.0104895|
+|hybrid (via crossref license)                         |        2|  0.0069930|
 
 ### by green or gold open access
 
@@ -90,12 +96,15 @@ oa_df %>%
   group_by(oa_color) %>%
   summarise(Articles = n()) %>%
   mutate(Proportion = Articles / sum(Articles)) %>%
-  arrange(desc(Articles))
-#> # A tibble: 3 x 3
-#>   oa_color Articles  Proportion
-#>      <chr>    <int>       <dbl>
-#> 1     <NA>      240 0.839160839
-#> 2    green       44 0.153846154
-#> 3     blue        2 0.006993007
+  arrange(desc(Articles)) %>%
+  knitr::kable()
 ```
+
+
+
+|oa_color | Articles| Proportion|
+|:--------|--------:|----------:|
+|NA       |      240|  0.8391608|
+|green    |       44|  0.1538462|
+|blue     |        2|  0.0069930|
 
