@@ -1,8 +1,7 @@
 
 
 
-# Task: Given a journal's ISSN, how do I find DOIs published in that jnl
-in a given year with R?
+# Task: Given a journal's ISSN, how do I find open access articles published in that journal in a given year with R?
 
 <https://twitter.com/StephenEglen/status/844201416478638081>
 
@@ -10,7 +9,6 @@ in a given year with R?
 a client for the DOI agency [Crossref](https://www.crossref.org/)
 and [roadoi](https://github.com/njahn82/roadoi), an interface
 to the [oaDOI.org linking service](https://oadoi.org/).
-roadoi is only available from GitHub.
 
 ## Fetch DOIs from Crossref by ISSN
 
@@ -29,7 +27,7 @@ my_jn_data <- rcrossref::cr_journals(
   limit = 1000
 )
 head(my_jn_data$data)
-#> # A tibble: 6 × 33
+#> # A tibble: 6 x 33
 #>   alternative.id
 #>            <chr>
 #> 1               
@@ -42,11 +40,12 @@ head(my_jn_data$data)
 #> #   deposited <chr>, DOI <chr>, funder <list>, indexed <chr>, ISBN <chr>,
 #> #   ISSN <chr>, issue <chr>, issued <chr>, license_date <chr>,
 #> #   license_URL <chr>, license_delay.in.days <chr>,
-#> #   license_content.version <chr>, link <list>, member <chr>, page <chr>,
+#> #   license_content.version <chr>, link <list>, member <chr>,
 #> #   prefix <chr>, publisher <chr>, reference.count <chr>, score <chr>,
-#> #   source <chr>, subject <chr>, subtitle <chr>, title <chr>, type <chr>,
-#> #   URL <chr>, volume <chr>, assertion <list>, author <list>,
-#> #   `clinical-trial-number` <list>, archive <chr>
+#> #   source <chr>, subject <chr>, title <chr>, type <chr>, URL <chr>,
+#> #   volume <chr>, assertion <list>, author <list>,
+#> #   `clinical-trial-number` <list>, page <chr>, subtitle <chr>,
+#> #   archive <chr>
 ```
 
 ## Call oaDOI.org
@@ -72,13 +71,15 @@ oa_df %>%
   summarise(Articles = n()) %>%
   mutate(Proportion = Articles / sum(Articles)) %>%
   arrange(desc(Articles))
-#> # A tibble: 4 × 3
-#>                                evidence Articles  Proportion
-#>                                   <chr>    <int>       <dbl>
-#> 1                                closed      246 0.860139860
-#> 2  oa repository (via BASE title match)       35 0.122377622
-#> 3      oa repository (via pmcid lookup)        3 0.010489510
-#> 4 hybrid journal (via crossref license)        2 0.006993007
+#> # A tibble: 5 x 3
+#>                                                evidence Articles
+#>                                                   <chr>    <int>
+#> 1                                                closed      240
+#> 2 oa repository (via BASE title and first author match)       34
+#> 3                    oa repository (via BASE doi match)        7
+#> 4                      oa repository (via pmcid lookup)        3
+#> 5                         hybrid (via crossref license)        2
+#> # ... with 1 more variables: Proportion <dbl>
 ```
 
 ### by green or gold open access
@@ -90,11 +91,11 @@ oa_df %>%
   summarise(Articles = n()) %>%
   mutate(Proportion = Articles / sum(Articles)) %>%
   arrange(desc(Articles))
-#> # A tibble: 3 × 3
+#> # A tibble: 3 x 3
 #>   oa_color Articles  Proportion
 #>      <chr>    <int>       <dbl>
-#> 1     <NA>      246 0.860139860
-#> 2    green       38 0.132867133
-#> 3     gold        2 0.006993007
+#> 1     <NA>      240 0.839160839
+#> 2    green       44 0.153846154
+#> 3     blue        2 0.006993007
 ```
 

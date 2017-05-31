@@ -4,7 +4,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  echo = FALSE) 
+  echo = TRUE) 
 #' ## Analyzing German spending on open access publication fees
 #' Required libraries:
 library(dplyr)

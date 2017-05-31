@@ -1,30 +1,10 @@
-## Plotting Open APC data
+## Summarizing Open APC data
 <https://github.com/openapc/openapc-de>
 Required libraries
 
 
 ```r
 library(dplyr)
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library(ggplot2)
 library(scales)
 ```
@@ -34,7 +14,7 @@ Get cost data from the Open APC initiatve
 
 
 ```r
-apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/f946f5c55e5335c3f2298be88507af94de45d585/data/apc_de.csv", col_names = TRUE)
+apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv", col_names = TRUE)
 ```
 
 ```
@@ -69,10 +49,10 @@ apc
 ```
 
 ```
-## # A tibble: 24,141 × 18
+## # A tibble: 31,011 × 18
 ##    institution period    euro                          doi is_hybrid
 ##          <chr>  <int>   <dbl>                        <chr>     <lgl>
-## 1    Bamberg U   2013 1372.00           10.2147/JPR.S45097     FALSE
+## 1    Bamberg U   2013 1372.00           10.2147/jpr.s45097     FALSE
 ## 2    Bamberg U   2013  960.00     10.3389/fpsyg.2013.00318     FALSE
 ## 3    Bamberg U   2013  960.00     10.3389/fpsyg.2013.00406     FALSE
 ## 4    Bamberg U   2013  960.00     10.3389/fpsyg.2013.00453     FALSE
@@ -82,7 +62,7 @@ apc
 ## 8    Bamberg U   2013 1022.78 10.1371/journal.pone.0083277     FALSE
 ## 9    Bamberg U   2013  229.61        10.5430/ijhe.v2n4p214     FALSE
 ## 10   Bamberg U   2013 2010.00     10.1186/1471-2202-14-154     FALSE
-## # ... with 24,131 more rows, and 13 more variables: publisher <chr>,
+## # ... with 31,001 more rows, and 13 more variables: publisher <chr>,
 ## #   journal_full_title <chr>, issn <chr>, issn_print <chr>,
 ## #   issn_electronic <chr>, issn_l <chr>, license_ref <chr>,
 ## #   indexed_in_crossref <lgl>, pmid <int>, pmcid <chr>, ut <chr>,
@@ -117,7 +97,7 @@ inst
 ```
 
 ```
-## # A tibble: 70 × 6
+## # A tibble: 93 × 6
 ##         institution institution_cubes_name
 ##               <chr>                  <chr>
 ## 1         Bamberg U              bamberg_u
@@ -130,7 +110,7 @@ inst
 ## 8               MPG                    mpg
 ## 9      Regensburg U           regensburg_u
 ## 10     TU Clausthal           tu_clausthal
-## # ... with 60 more rows, and 4 more variables:
+## # ... with 83 more rows, and 4 more variables:
 ## #   institution_full_name <chr>, continent <chr>, country <chr>,
 ## #   state <chr>
 ```
@@ -157,22 +137,22 @@ apc_time
 ```
 
 ```
-## Source: local data frame [58 x 4]
-## Groups: period, is_hybrid [22]
+## Source: local data frame [67 x 4]
+## Groups: period, is_hybrid [19]
 ## 
 ##    period is_hybrid country articles
 ##     <int>     <lgl>   <chr>    <int>
-## 1    2005     FALSE     DEU        4
-## 2    2005      TRUE     DEU        1
-## 3    2006     FALSE     DEU       46
-## 4    2006      TRUE     DEU        6
-## 5    2007     FALSE     DEU       84
-## 6    2007      TRUE     DEU        4
-## 7    2008     FALSE     CAN       23
-## 8    2008     FALSE     DEU      182
-## 9    2009     FALSE     CAN       38
-## 10   2009     FALSE     DEU      318
-## # ... with 48 more rows
+## 1    2005     FALSE     DEU        5
+## 2    2006     FALSE     DEU       52
+## 3    2007     FALSE     DEU       88
+## 4    2008     FALSE     CAN       23
+## 5    2008     FALSE     DEU      182
+## 6    2009     FALSE     CAN       38
+## 7    2009     FALSE     DEU      318
+## 8    2010     FALSE     CAN       83
+## 9    2010     FALSE     DEU      307
+## 10   2010     FALSE     ESP        8
+## # ... with 57 more rows
 ```
 
 Create the plot:
@@ -195,6 +175,10 @@ plot_time
 
 ![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png)
 
+```r
+ggsave("plot_time.pdf", plot_time, dpi = 300, height=4, width=9)
+```
+
 Facet the plot by country
 
 
@@ -203,4 +187,8 @@ plot_time + facet_wrap(~country, ncol = 3)
 ```
 
 ![plot of chunk unnamed-chunk-10](figure/unnamed-chunk-10-1.png)
+
+```r
+ggsave("plot_time_country.pdf", dpi = 300, height=4, width=9)
+```
 

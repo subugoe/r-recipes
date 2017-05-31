@@ -1,4 +1,4 @@
-#' ## Plotting Open APC data
+#' ## Summarizing Open APC data
 #' <https://github.com/openapc/openapc-de>
 #' Required libraries
 library(dplyr)
@@ -6,7 +6,7 @@ library(ggplot2)
 library(scales)
 #' ## Load datasets from GitHub 
 #' Get cost data from the Open APC initiatve
-apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/f946f5c55e5335c3f2298be88507af94de45d585/data/apc_de.csv", col_names = TRUE)
+apc <- readr::read_csv("https://raw.githubusercontent.com/OpenAPC/openapc-de/master/data/apc_de.csv", col_names = TRUE)
 #' Overview
 apc
 #' get insitution coding the OLAP server uses
@@ -36,6 +36,8 @@ plot_time <- ggplot(apc_time, aes(period, articles, group = is_hybrid, fill = is
   theme_bw()
 #+ fig.width=9, fig.height=4 
 plot_time
+ggsave("plot_time.pdf", plot_time, dpi = 300, height=4, width=9)
 #' Facet the plot by country
 #+ fig.width=9, fig.height=4 
 plot_time + facet_wrap(~country, ncol = 3)
+ggsave("plot_time_country.pdf", dpi = 300, height=4, width=9)

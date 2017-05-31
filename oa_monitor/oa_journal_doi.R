@@ -5,8 +5,7 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE
 )
-#' # Task: Given a journal's ISSN, how do I find DOIs published in that jnl
-#' in a given year with R?
+#' # Task: Given a journal's ISSN, how do I find open access articles published in that journal in a given year with R?
 #'
 #' <https://twitter.com/StephenEglen/status/844201416478638081>
 #'
@@ -14,7 +13,6 @@ knitr::opts_chunk$set(
 #' a client for the DOI agency [Crossref](https://www.crossref.org/)
 #' and [roadoi](https://github.com/njahn82/roadoi), an interface
 #' to the [oaDOI.org linking service](https://oadoi.org/).
-#' roadoi is only available from GitHub.
 #'
 #' ## Fetch DOIs from Crossref by ISSN
 #'
