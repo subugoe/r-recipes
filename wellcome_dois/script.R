@@ -10,7 +10,7 @@ wellcome_df <- rcrossref::cr_works(filter = c(issn = "2398-502X"),
 names(wellcome_df$link) <- wellcome_df$DOI
 #' unnest, remove unneded string, and export data
 wellcome_dois <- dplyr::bind_rows(wellcome_df$link, .id = "doi") %>% 
-  mutate(URL = gsub("/iparadigms", "", URL)) %>% 
-  select(1:2)
-wos <- inner_join(wellcome_dois, wos, by = c("URL" = "Article URL"))
+  dplyr::mutate(URL = gsub("/iparadigms", "", URL)) %>% 
+  dplyr::select(1:2)
+wos <- dplyr::inner_join(wellcome_dois, wos, by = c("URL" = "Article URL"))
 readr::write_csv(wos, "wos_dois.csv")
