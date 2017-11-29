@@ -1,0 +1,99 @@
+---
+title: "Report Open Access status JASIST"
+author: "Anne Hein"
+output:
+  html_document:
+    keep_md: true
+bibliography: crossref.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, 
+                      cache = TRUE, 
+                      warning = FALSE, 
+                      error = FALSE,
+                      message = FALSE
+                      )
+```
+
+## Introduction
+
+@Piwowar2017 investigated the Open Access (OA) status of scholarly literature. They examined three samples of 100 000 articles each chosen from three populations, namely journal articles assigned a Crossref DOI, recent journal articles indexed in Web of Science, and articles viewed by users of Unpaywall. They estimate that at least 28 % of all scientific publications is OA, for the year 2015 they even obtain that almost half (45%) of the articles is OA.
+
+In this brief report I investigated all articles with Crossref DOI published in the [Journal of the Association for Information Science and Technology (JASIST)](http://onlinelibrary.wiley.com/journal/10.1002/(ISSN)2330-1643) in the years from 2014 to 2017 with respect to their OA status.
+
+To this end, I first imported the metadata of the articles published in JASIST between 2014 and 2017 using the rcrossref package by @CrossrefPack and determined the total number of publications in each of the four years. In a second step I used the roadoi package by @RoadoiPack to examine which of the articles are OA.
+
+## Gathering bibliographic metadata
+
+In this first step I used the `rcrossref::cr_works()` function to find the metadata of all articles published in JASIST (ISSN-Number: 2330-1635) which have a publication date between 1st of January 2014 and the 31st of December 2017. 
+
+```{r cache = TRUE}
+library(rcrossref)
+metadata <- rcrossref::cr_works(
+  filter = c(
+    from_pub_date = "2014-01-01",
+    until_pub_date = "2017-12-31",
+    issn = "2330-1635"
+    ),
+  limit = 1000
+)
+metadata
+```
+
+I determined the number of articles published in each year. The results are displayed in the following figure.
+
+```{r, fig.cap="Number of publications per year"}
+library(dplyr)
+library(ggplot2)
+metadata$data %>%
+  mutate(issued, issued = lubridate::parse_date_time(issued, c('y', 'ymd', 'ym'))) %>%
+  mutate(issued, issued = lubridate::year(issued)) %>%
+  group_by(issued) %>%
+  summarize(pubs = n())  %>%
+  # arrange(desc(pubs))
+  ggplot(aes(issued, pubs)) + geom_bar(stat = "identity") + labs(title = "Number of publications per year", x  ="Publication year", y = "Number of publications")
+```
+
+## Availability of Open Access full text versions
+
+In a second step, I applied the `roadoi::oadoi_fetch()` function to examine for which of the dois an Open Access full text version can be found by the oaDOI search engine.
+
+```{r cache = TRUE}
+library(roadoi)
+oa_df <- roadoi::oadoi_fetch(dois = metadata$data$DOI, 
+                             email = "anne.hein@mathematik.uni-goettingen.de")
+oa_df
+```
+
+The following figure displays the number of articles that are OA and not OA, resp.
+
+```{r}
+oa_df %>%
+  group_by(is_oa, year) %>%
+  summarize(oa = n()) %>%
+  ggplot(aes(year, oa, fill = is_oa)) + 
+  geom_bar(stat = "identity") + 
+  labs(title = "How many JASIST articles are openly available?", 
+       subtitle = "Data from Crossref and oaDOI",
+       x = "Publication year", 
+       y = "Number of Publications") +
+  scale_fill_manual(name = "OA status", values = c("#545E75", "#63ADF2") , labels = c("Non Open Access", "Open Access")) +
+  theme_minimal(base_family="Arial Narrow")
+```
+
+Apparently, for the JASIST the percentage of articles that are OA is much lower than the estimated overall percentage of OA articles from @Piwowar2017. Furthermore, the percentage of OA articles decreased, especially for the last year.
+
+## Acknowledgement
+
+I thank Birgit Schmidt for offering me the internship during which I wrote this report and I especially thank Najko Jahn for showing me how to use R Markdown and for revising my work.
+
+## Session Info
+
+```{r, include=TRUE}
+sessionInfo()
+```
+
+
+## References
+
