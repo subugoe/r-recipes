@@ -35,68 +35,87 @@ Get article metadata first:
 ```{r, cache = TRUE}
 f_1000_md <- europepmc::epmc_search("ISSN:2046-1402", 
                                     synonym = FALSE, 
-                                    limit = 3000)
-filter(f_1000_md, !grepl("review", pubType))
+                                    limit = 3000) %>%
+    # no comprehensive open peer review history for reviews published in F1000
+    filter(!grepl("review", pubType))
+  # no comprehensive open peer review history for reviews published in F1000
 ```
 
 ## Obtaining review metadata
 
 ```{r}
-tt <- europepmc::epmc_ftxt("PMC5686505")
-parse_f1000 <- function(x) {
-  tt <- europepmc::epmc_ftxt(x)
+#' Helper function to fetch and parse F1000 reviews
+#'
+#' @param pmcid PMCID
+fetch_f100_reviews <- function(pmcid) {
+  #fetch openly available fulltextfrom Europe PMC
+  tt <- europepmc::epmc_ftxt(pmcid)
+  # get peer review node
+  review_node <- xml_find_all(tt, '//sub-article[@article-type="peer-review"]//front-stub')
+  review_details(review_node) %>%
+    # proper date format
+    mutate(`Review published` = paste(Year, Month, Day, sep = "-")) %>%
+    # document id
+    mutate(pmcid = pmcid)
+}
+
+                       
+#' Parser fro open peer review metadata
+#'
+#' @param review_node XML node containing the relevant metadata
+review_details <- function(review_node) {
   review_title <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//title-group//article-title'
+    xml2::xml_find_first(
+      review_node,
+      'title-group//article-title'
     )
   review_doi <-
-    xml2::xml_find_all(tt,
-                       '//sub-article[@article-type="peer-review"]//front-stub//article-id')
+    xml2::xml_find_first(review_node,
+                       'article-id')
   reviewer_sur <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//contrib//name//surname'
+    xml2::xml_find_first(
+      review_node,
+      'contrib-group//contrib//name//surname'
     )
   reviewer_given <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//contrib//name//given-names'
+    xml2::xml_find_first(
+      review_node,
+      'contrib-group//contrib//name//given-names'
     )
   reviewer_orcid <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//contrib//contrib-id[@contrib-id-type="orcid"]'
+    xml2::xml_find_first(
+      review_node,
+      'contrib-group//contrib//contrib-id[@contrib-id-type="orcid"]'
     )
   reviewer_aff <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//aff'
+    xml2::xml_find_first(
+      review_node,
+      'contrib-group//aff'
     )
   review_status <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//custom-meta-group//custom-meta//meta-value'
+    xml2::xml_find_first(
+      review_node,
+      'custom-meta-group//custom-meta//meta-value'
     )
   review_pub_date_year <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//pub-date[@pub-type="epub"]//year'
+    xml2::xml_find_first(
+      review_node,
+      'pub-date[@pub-type="epub"]//year'
     )
   review_pub_date_month <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//pub-date[@pub-type="epub"]//month'
+    xml2::xml_find_first(
+      review_node,
+      'pub-date[@pub-type="epub"]//month'
     )
   review_pub_date_day <-
-    xml2::xml_find_all(
-      tt,
-      '//sub-article[@article-type="peer-review"]//front-stub//pub-date[@pub-type="epub"]//day'
+    xml2::xml_find_first(
+      review_node,
+      'pub-date[@pub-type="epub"]//day'
     )
   review <-
-    xml2::xml_find_all(tt, '//sub-article[@article-type="peer-review"]//body')
-  test <-
-    map(
+    xml2::xml_find_all(review_node, '//sub-article[@article-type="peer-review"]//body')
+  my_df <-
+    purrr::map_df(
       list(
         `Review Title` = review_title,
         `Review DOI` = review_doi,
@@ -112,10 +131,25 @@ parse_f1000 <- function(x) {
       ),
       xml2::xml_text
     )
- # test %>%
-  #  mutate(`Review published` = paste(Year, Month, Day, sep = "-")) %>%
-  #  mutate(pmcid = x)
-  return(test)
+ return(my_df)
 }
 
+```
+
+Let's obtain metadata about the open peer reviews
+
+```{r, chache = TRUE}
+my_reviews <- purrr::map(f_1000_md$pmcid, safely(.f = fetch_f100_reviews))
+my_reviews_df <- map(my_reviews, "result") %>% 
+  bind_rows
+```
+
+Add DOI article information and export:
+
+```{r}
+article_md_short <- select(f_1000_md, 
+                           pmcid, pmid, doi, title, 
+                           `First Publication of Article` = firstPublicationDate)
+my_df <- left_join(my_reviews_df, article_md_short, by = c("pmcid" = "pmcid"))
+write_csv(my_df, "f1000_reviews.csv")
 ```
