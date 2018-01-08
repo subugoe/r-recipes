@@ -1,0 +1,121 @@
+---
+title: "F1000 review history"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(europepmc)
+library(xml2)
+```
+
+## How many F1000 journal articles are available in Europe PMC?
+
+```{r}
+tt_oa <- europepmc::epmc_hits_trend("ISSN:2046-1402", 
+                                    period = 2012:2017, 
+                                    synonym = FALSE)
+tt_oa
+```
+
+```{r}
+# we use ggplot2 for plotting the graph
+ggplot(tt_oa, aes(year, query_hits / all_hits)) + 
+  geom_point() + 
+  geom_line() +
+  xlab("Year published") + 
+  ylab("Proportion of F1000 in Europe PMC")
+```
+
+##  Obtaining article history
+
+Get article metadata first:
+
+```{r, cache = TRUE}
+f_1000_md <- europepmc::epmc_search("ISSN:2046-1402", 
+                                    synonym = FALSE, 
+                                    limit = 3000)
+filter(f_1000_md, !grepl("review", pubType))
+```
+
+## Obtaining review metadata
+
+```{r}
+tt <- europepmc::epmc_ftxt("PMC5686505")
+parse_f1000 <- function(x) {
+  tt <- europepmc::epmc_ftxt(x)
+  review_title <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//title-group//article-title'
+    )
+  review_doi <-
+    xml2::xml_find_all(tt,
+                       '//sub-article[@article-type="peer-review"]//front-stub//article-id')
+  reviewer_sur <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//contrib//name//surname'
+    )
+  reviewer_given <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//contrib//name//given-names'
+    )
+  reviewer_orcid <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//contrib//contrib-id[@contrib-id-type="orcid"]'
+    )
+  reviewer_aff <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//contrib-group//aff'
+    )
+  review_status <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//custom-meta-group//custom-meta//meta-value'
+    )
+  review_pub_date_year <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//pub-date[@pub-type="epub"]//year'
+    )
+  review_pub_date_month <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//pub-date[@pub-type="epub"]//month'
+    )
+  review_pub_date_day <-
+    xml2::xml_find_all(
+      tt,
+      '//sub-article[@article-type="peer-review"]//front-stub//pub-date[@pub-type="epub"]//day'
+    )
+  review <-
+    xml2::xml_find_all(tt, '//sub-article[@article-type="peer-review"]//body')
+  test <-
+    map(
+      list(
+        `Review Title` = review_title,
+        `Review DOI` = review_doi,
+        `Reviewer Surname` = reviewer_sur,
+        `Reviewer Given Name` = reviewer_given,
+        `Reviewer ORCID` = reviewer_orcid,
+        `Reviewer Affiliations` = reviewer_aff,
+        `Review Status` = review_status,
+        `Review` = review,
+        `Day` = review_pub_date_day,
+        `Month` = review_pub_date_month,
+        `Year` = review_pub_date_year
+      ),
+      xml2::xml_text
+    )
+ # test %>%
+  #  mutate(`Review published` = paste(Year, Month, Day, sep = "-")) %>%
+  #  mutate(pmcid = x)
+  return(test)
+}
+
+```
