@@ -50,13 +50,18 @@ f_1000_md <- europepmc::epmc_search("ISSN:2046-1402",
 fetch_f100_reviews <- function(pmcid) {
   #fetch openly available fulltextfrom Europe PMC
   tt <- europepmc::epmc_ftxt(pmcid)
+  # get type
+  f1000_type <- xml2::xml_find_all(tt, '//article-meta//article-categories//subj-group[@subj-group-type="heading"]//subject') %>%
+    xml_text
   # get peer review node
   review_node <- xml_find_all(tt, '//sub-article[@article-type="peer-review"]//front-stub')
   review_details(review_node) %>%
     # proper date format
     mutate(`Review published` = paste(Year, Month, Day, sep = "-")) %>%
     # document id
-    mutate(pmcid = pmcid)
+    mutate(pmcid = pmcid) %>%
+    # f1000 type
+    mutate(f1000_type = f1000_type)
 }
 
                        
@@ -149,7 +154,12 @@ Add DOI article information and export:
 ```{r}
 article_md_short <- select(f_1000_md, 
                            pmcid, pmid, doi, title, 
-                           `First Publication of Article` = firstPublicationDate)
+                           `First Publication of Article` = firstPublicationDate,
+                           article_type = pubType)
 my_df <- left_join(my_reviews_df, article_md_short, by = c("pmcid" = "pmcid"))
 write_csv(my_df, "f1000_reviews.csv")
 ```
+
+
+  
+  
