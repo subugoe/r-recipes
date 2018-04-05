@@ -31,7 +31,28 @@ no_refs_df <- bind_rows(no_refs) %>%
   arrange(desc(total.dois))
 ```
 
-Top 10
+tibble
+
+
+```r
+no_refs_df
+#> # A tibble: 7,046 x 6
+#>       id primary_name  location   last_status_che… total.dois current.dois
+#>    <int> <chr>         <chr>      <date>                <dbl> <chr>       
+#>  1    78 Elsevier BV   230 Park … 2018-04-04         16105368 1486170     
+#>  2   263 Institute of… 445 Hoes … 2018-04-04          3196252 448946      
+#>  3   276 Ovid Technol… 100 River… 2018-04-04          1820215 120939      
+#>  4  1121 JSTOR         301 E. Li… 2018-04-04          1759017 2867        
+#>  5   266 IOP Publishi… Temple Ci… 2018-04-04           776954 83684       
+#>  6   194 Georg Thieme… Ruedigers… 2018-04-04           758611 62959       
+#>  7    10 American Med… 330 N. Wa… 2018-04-04           593700 12635       
+#>  8   189 SPIE-Intl So… P.O. Box … 2018-04-04           492215 41460       
+#>  9   200 University o… Attn:Elma… 2018-04-04           436402 10976       
+#> 10    15 American Psy… 750 First… 2018-04-04           299286 10853       
+#> # ... with 7,036 more rows
+```
+
+Top 10 nicely printed
 
 
 ```r
@@ -77,7 +98,28 @@ public_refs_df <- bind_rows(public_refs) %>%
   arrange(desc(total.dois))
 ```
 
-Top 10
+tibble
+
+
+```r
+public_refs_df
+#> # A tibble: 1,062 x 6
+#>       id primary_name  location   last_status_che… total.dois current.dois
+#>    <int> <chr>         <chr>      <date>                <dbl> <chr>       
+#>  1   297 Springer Nat… 233 Sprin… 2018-04-04         10180248 890478      
+#>  2   311 Wiley-Blackw… 111 River… 2018-04-04          8442794 535113      
+#>  3   301 Informa UK L… Informa U… 2018-04-04          4371556 341825      
+#>  4   286 Oxford Unive… Academic … 2018-04-04          3168344 251355      
+#>  5   179 SAGE Publica… 2455 Tell… 2018-04-04          2102183 139926      
+#>  6   316 American Che… CAS, a di… 2018-04-04          1503782 106455      
+#>  7    56 Cambridge Un… The Edinb… 2018-04-04          1442370 62137       
+#>  8   339 Springer Nat… 233 Sprin… 2018-04-04          1395059 126291      
+#>  9   374 Walter de Gr… Genthiner… 2018-04-04           902814 73596       
+#> 10   239 BMJ           BMA House… 2018-04-04           849961 54889       
+#> # ... with 1,052 more rows
+```
+
+Top 10 nicely printed
 
 
 ```r

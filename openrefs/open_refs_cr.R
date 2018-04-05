@@ -25,7 +25,9 @@ no_refs_df <- bind_rows(no_refs) %>%
   mutate(total.dois = as.numeric(total.dois)) %>%
   filter(current.dois > 0) %>%
   arrange(desc(total.dois))
-#' Top 10
+#' tibble
+no_refs_df
+#' Top 10 nicely printed
 no_refs_df %>%
   head(10) %>%
   knitr::kable()
@@ -41,7 +43,9 @@ public_refs_df <- bind_rows(public_refs) %>%
   select(1:6) %>%
   mutate(total.dois = as.numeric(total.dois)) %>%
   arrange(desc(total.dois))
-#' Top 10
+#' tibble
+public_refs_df
+#' Top 10 nicely printed
 public_refs_df %>%
   head(10) %>%
   knitr::kable()
