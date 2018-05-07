@@ -1,0 +1,118 @@
+---
+title: "Journals flipped by Springer Nature between 2015 and 2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE,
+  warning = FALSE,
+  message = FALSE,
+  echo = TRUE,
+  fig.width = 9,
+  fig.height = 6
+)
+options(scipen = 999, digits = 2)
+knitr::knit_hooks$set(inline = function(x) {
+      if(is.numeric(x)){
+          return(prettyNum(x, big.mark=","))
+      }else{
+          return(x)
+       }
+   })
+```
+
+The aim of this document is to examine how many journals published by Springer Nature changed their business model between 2015 - 2018.
+
+## Methods and Data
+
+[Bernd-Christoph Kämper](https://twitter.com/bckaemper/status/993477985327108101) from Stuttgart University Library pointed me to [this catalogue of journals offered by Springer Nature to librarians](https://www.springernature.com/gp/librarians/licensing/journals-price-list). Let's obtain the journal  spreadsheets for 2015 and 2018, and load them into R.
+
+```{r}
+library(tidyverse)
+library(rio)
+library(viridis)
+sn_2018 <-
+  rio::import("https://resource-cms.springernature.com/springer-cms/rest/v1/content/15226614/data/v7", skip = 8) %>%
+  as_data_frame() %>%
+  # add year column
+  mutate(file_year = 2018)
+sn_2015 <- rio::import("https://resource-cms.springernature.com/springer-cms/rest/v1/content/10619914/data/v1", skip = 8) %>%
+  as_data_frame() %>%
+  # add year column
+  mutate(file_year = 2015)
+# let's bind them
+bind_rows(sn_2018, sn_2015) -> my_data
+my_data
+```
+
+To get flipped journals, we will examine which journals changed their open access business model.
+
+```{r}
+my_data %>%
+  distinct(`Open Access Option`, Title) %>%
+  group_by(Title) %>%
+  filter(!is.na(`Open Access Option`)) %>%
+  filter(n() > 1) -> flipped_jns
+```
+
+## Results
+
+The following figure displays the number of journals and their underlying business model.
+
+
+```{r}
+my_data %>%
+  count(file_year, `Open Access Option`) %>% 
+  # remove NAs
+  mutate(`Open Access Option` = ifelse(is.na(`Open Access Option`), "not reported", `Open Access Option`)) %>%
+  ggplot(aes(factor(file_year), n, fill = `Open Access Option`)) + 
+  geom_bar(stat = "identity") +
+  coord_flip() +
+  scale_x_discrete(drop = FALSE) +
+  viridis::scale_fill_viridis("OA Option", discrete = TRUE) +
+  scale_y_continuous(labels=function(x) format(x, big.mark = " ", scientific = FALSE),
+                       breaks= scales::pretty_breaks()) +
+  # mimicking github.com/hrbrmstr/hrbrthemes 
+  theme_minimal(base_family="Arial Narrow", base_size = 16) +
+  theme(plot.margin=margin(30,30,30,30)) +
+  theme(panel.grid.minor=element_blank()) +
+  theme(axis.ticks=element_blank()) +
+  theme(panel.grid.major.y=element_blank()) +
+  theme(panel.border=element_blank()) +
+  xlab("Year") +
+  ylab("Number of Springer Nature journals")
+```
+
+Apparently, both the total number of journals and the number of hybrid open access journals increased between 2015 - 2018. Hybrid open access is still the dominant business model for Springer Nature journals.
+
+We also asked about journals were the business model changed over the year. The following table summarizes the open access status for these flipped journals in 2018:
+
+```{r}
+sn_2018 %>%
+  filter(Title %in% flipped_jns$Title) %>%
+  count(`Open Access Option`) %>%
+  knitr::kable()
+```
+
+Surprisingly, more journals changed the business model to Hybrid (Open Choice) than to fully open access, including journals like [Health Information Science Systems](https://link.springer.com/journal/13755), which was published under the brand "BioMed Central" in 2015, and is now published as toll-access journal.
+
+Here's the list of all flipped journals with their most current open access status:
+
+```{r}
+sn_2018 %>%
+  filter(Title %in% flipped_jns$Title) %>%
+  select(Title, `Open Access Option`) %>%
+  knitr::kable()
+```
+
+## Discussion and conclusion
+
+Despite recent efforts to transition journals from a subscription-based model to fully open access, our findings suggest that hybrid open access is still prevalent for journals published by Springer Nature. In fact, more journals are flipped from a fully open access to hybrid open access, raising important questions about how to sustain fully open access journals.
+
+## Session info
+
+```{r}
+sessionInfo()
+```
