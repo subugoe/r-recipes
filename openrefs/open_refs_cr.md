@@ -3,7 +3,7 @@
 
 ## How many publishers have opened-up their references?
 
-Question was asked by @rmounce
+Question was asked by @rmounce (@rossmounce on GH)
 <https://github.com/ropensci/rcrossref/issues/158>
 
 Let's implement Scott Chamberlain's solution
