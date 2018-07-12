@@ -4,7 +4,10 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   warning = FALSE,
   message = FALSE,
-  echo = TRUE)
+  echo = TRUE,
+  fig.width = 8,
+  fig.height = 5,
+  dpi=300)
 #' ### Proportion of Medline-indexed publications with preprint
 library(europepmc)
 library(tidyverse)
